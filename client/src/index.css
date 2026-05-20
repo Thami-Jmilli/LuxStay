@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    margin: 0;
+    font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #fdf8f3;
+    color: #3d230d;
+  }
+
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+  }
+}
+
+@layer components {
+  .rdrCalendarWrapper {
+    background: white;
+    border: 1px solid #d4a96a;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(160, 104, 48, 0.2);
+  }
+
+  .rdrSelected,
+  .rdrStartEdge,
+  .rdrEndEdge {
+    background: #a06830 !important;
+  }
+
+  .rdrInRange {
+    background: #e8c99a !important;
+  }
+
+  .rdrDayToday .rdrDayNumber span:after {
+    background: #a06830 !important;
+  }
+}
