@@ -31,17 +31,30 @@ const Hotel = () => {
   const { user } = useContext(AuthContext);
   const { dates, options } = useContext(SearchContext);
 
-  const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
+  // SAFE IMAGES ARRAY
+  const images = Array.isArray(data?.images)
+    ? data.images
+    : [];
+
+  const MILLISECONDS_PER_DAY =
+    1000 * 60 * 60 * 24;
 
   function dayDifference(date1, date2) {
-    const timeDiff = Math.abs(date2.getTime() - date1.getTime());
+    const timeDiff = Math.abs(
+      date2.getTime() - date1.getTime()
+    );
 
-    return Math.ceil(timeDiff / MILLISECONDS_PER_DAY);
+    return Math.ceil(
+      timeDiff / MILLISECONDS_PER_DAY
+    );
   }
 
   const days =
     dates?.length > 0
-      ? dayDifference(dates[0]?.endDate, dates[0]?.startDate)
+      ? dayDifference(
+          dates[0]?.endDate,
+          dates[0]?.startDate
+        )
       : 1;
 
   const handleOpen = (i) => {
@@ -53,9 +66,15 @@ const Hotel = () => {
     let newSlideNumber;
 
     if (direction === "l") {
-      newSlideNumber = slideNumber === 0 ? 5 : slideNumber - 1;
+      newSlideNumber =
+        slideNumber === 0
+          ? images.length - 1
+          : slideNumber - 1;
     } else {
-      newSlideNumber = slideNumber === 5 ? 0 : slideNumber + 1;
+      newSlideNumber =
+        slideNumber === images.length - 1
+          ? 0
+          : slideNumber + 1;
     }
 
     setSlideNumber(newSlideNumber);
@@ -72,8 +91,14 @@ const Hotel = () => {
   };
 
   return (
-    <div style={{ backgroundColor: "#fdf8f3", minHeight: "100vh" }}>
+    <div
+      style={{
+        backgroundColor: "#fdf8f3",
+        minHeight: "100vh",
+      }}
+    >
       <Navbar />
+
       <Header type="list" />
 
       {loading ? (
@@ -97,7 +122,7 @@ const Hotel = () => {
               marginTop: "24px",
             }}
           >
-            {open && (
+            {open && images.length > 0 && (
               <div
                 style={{
                   position: "fixed",
@@ -105,7 +130,8 @@ const Hotel = () => {
                   left: 0,
                   width: "100%",
                   height: "100vh",
-                  backgroundColor: "rgba(30,12,0,0.85)",
+                  backgroundColor:
+                    "rgba(30,12,0,0.85)",
                   zIndex: 999,
                   display: "flex",
                   alignItems: "center",
@@ -146,7 +172,7 @@ const Hotel = () => {
                   }}
                 >
                   <img
-                    src={data.images[slideNumber]}
+                    src={images[slideNumber]}
                     alt=""
                     style={{
                       maxWidth: "100%",
@@ -188,7 +214,7 @@ const Hotel = () => {
                   margin: 0,
                 }}
               >
-                {data.hotel_name}
+                {data?.hotel_name || "Luxury Hotel"}
               </h1>
 
               <div
@@ -201,7 +227,11 @@ const Hotel = () => {
                 }}
               >
                 <FontAwesomeIcon icon={faLocationDot} />
-                <span>{data.hotel_address}</span>
+
+                <span>
+                  {data?.hotel_address ||
+                    "Unknown location"}
+                </span>
               </div>
 
               <span
@@ -211,7 +241,8 @@ const Hotel = () => {
                   fontSize: "14px",
                 }}
               >
-                Excellent location – {data.distance}m from center
+                Excellent location –{" "}
+                {data?.distance || 0}m from center
               </span>
 
               <span
@@ -225,8 +256,8 @@ const Hotel = () => {
                   border: "1px solid #c3e6cb",
                 }}
               >
-                ✨ Book a stay over ${data.cheapestPrice} and enjoy a relaxing
-                luxury experience
+                ✨ Book a stay over $
+                {data?.cheapestPrice || 0}
               </span>
 
               <div
@@ -238,7 +269,7 @@ const Hotel = () => {
                   marginTop: "8px",
                 }}
               >
-                {data.images?.map((photo, i) => (
+                {images.map((photo, i) => (
                   <div
                     key={i}
                     style={{
@@ -257,14 +288,7 @@ const Hotel = () => {
                         height: "180px",
                         objectFit: "cover",
                         display: "block",
-                        transition: "transform 0.2s",
                       }}
-                      onMouseEnter={(e) =>
-                        (e.target.style.transform = "scale(1.03)")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.target.style.transform = "scale(1)")
-                      }
                     />
                   </div>
                 ))}
@@ -285,10 +309,10 @@ const Hotel = () => {
                       fontSize: "22px",
                       fontFamily: "Georgia, serif",
                       color: "#3d230d",
-                      marginTop: 0,
                     }}
                   >
-                    {data.hotel_title}
+                    {data?.hotel_title ||
+                      "Relax & Enjoy"}
                   </h1>
 
                   <p
@@ -298,39 +322,9 @@ const Hotel = () => {
                       lineHeight: "1.7",
                     }}
                   >
-                    {data.hotel_description}
+                    {data?.hotel_description ||
+                      "Enjoy your luxury stay."}
                   </p>
-
-                  <div
-                    style={{
-                      marginTop: "20px",
-                      padding: "20px",
-                      borderRadius: "10px",
-                      backgroundColor: "#f5e6d3",
-                      border: "1px solid #d4a96a",
-                    }}
-                  >
-                    <h2
-                      style={{
-                        margin: "0 0 8px",
-                        color: "#3d230d",
-                        fontFamily: "Georgia, serif",
-                      }}
-                    >
-                      Relax & Enjoy Your Stay 🌴
-                    </h2>
-
-                    <p
-                      style={{
-                        margin: 0,
-                        color: "#7d4f22",
-                        fontSize: "14px",
-                      }}
-                    >
-                      Escape into comfort with premium rooms, beautiful views,
-                      and unforgettable hospitality.
-                    </p>
-                  </div>
                 </div>
 
                 <div
@@ -351,26 +345,15 @@ const Hotel = () => {
                       fontSize: "17px",
                       color: "#ffd93d",
                       margin: 0,
-                      fontFamily: "Georgia, serif",
                     }}
                   >
                     Perfect for a {days}-night stay!
                   </h1>
 
-                  <span
-                    style={{
-                      fontSize: "13px",
-                      color: "#e8c99a",
-                    }}
-                  >
-                    Located in the real heart of the city.
-                  </span>
-
                   <h2
                     style={{
                       fontWeight: "300",
                       margin: 0,
-                      color: "white",
                     }}
                   >
                     <b
@@ -381,10 +364,9 @@ const Hotel = () => {
                     >
                       $
                       {days *
-                        data.cheapestPrice *
+                        (data?.cheapestPrice || 0) *
                         (options?.rooms || 1)}
-                    </b>{" "}
-                    ({days} nights)
+                    </b>
                   </h2>
 
                   <button
@@ -412,7 +394,12 @@ const Hotel = () => {
         </>
       )}
 
-      {openModal && <Reserve setOpen={setOpenModal} hotelId={id} />}
+      {openModal && (
+        <Reserve
+          setOpen={setOpenModal}
+          hotelId={id}
+        />
+      )}
     </div>
   );
 };
