@@ -43,7 +43,7 @@ const Reserve = ({ setOpen, hotelId }) => {
     try {
       await Promise.all(
         selectedRooms.map(roomId =>
-          axios.put(`http://localhost:5000/api/rooms/availability/${roomId}`, { dates: allDates }, { withCredentials: true })
+          axios.put(`https://luxstay-rlva.onrender.com/api/rooms/availability/${roomId}`, { dates: allDates }, { withCredentials: true })
         )
       );
       alert("Room booked successfully ✅");
