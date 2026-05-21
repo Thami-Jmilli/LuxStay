@@ -3,7 +3,10 @@ import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 
-const API = axios.create({ baseURL: "http://localhost:5000/api", withCredentials: true });
+const API = axios.create({
+  baseURL: "https://luxstay-rlva.onrender.com/api",
+  withCredentials: true,
+});
 
 const Login = () => {
   const [credentials, setCredentials] = useState({ user_name: "", password: "" });
